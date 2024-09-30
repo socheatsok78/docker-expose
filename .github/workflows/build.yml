@@ -5,22 +5,11 @@ on:
   pull_request:
 
 jobs:
-  generate:
-    runs-on: ubuntu-latest
-    steps:
-      - id: alpine
-        uses: actions-matrix/alpine-matrix-action@v1
-    outputs:
-      matrix: ${{ steps.alpine.outputs.matrix }}
-
   build:
-    needs: generate
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    strategy:
-      matrix: ${{ fromJson(needs.generate.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,14 +36,15 @@ jobs:
       - name: Generate Docker metadata
         id: docker-meta
         uses: docker/metadata-action@v5
-        env:
-          ALPINE_VERSION: ${{ matrix.version }}
         with:
           images: |
             docker.io/${{ github.actor }}/expose
             ghcr.io/${{ github.actor }}/expose
           flavor: latest=false
-          tags: type=raw,value=${{ matrix.version }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
 
       - name: Generate GitHub metadata
         id: github-meta
