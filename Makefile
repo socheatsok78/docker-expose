@@ -1,3 +1,3 @@
 it: build
 build:
-	docker buildx bake dev
+	docker buildx bake dev --load

@@ -23,4 +23,7 @@ target "dev" {
     args = {
         EXPOSE_IMAGE = "${EXPOSE_IMAGE}"
     }
+    tags = [
+        "socheatsok78/expose:dev"
+    ]
 }

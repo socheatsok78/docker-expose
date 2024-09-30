@@ -1,10 +1,36 @@
 #!/bin/bash
 
-EXPOSE_DOMAIN=${EXPOSE_DOMAIN:-localhost}
-EXPOSE_SERVER_PORT=${EXPOSE_SERVER_PORT:-80}
-EXPOSE_SERVER_ENDPOINT_URL=${EXPOSE_SERVER_ENDPOINT_URL:-https://expose.dev/api/servers}
-EXPOSE_SERVER_ADMIN_USERNAME=${EXPOSE_SERVER_ADMIN_USERNAME:-expose}
-EXPOSE_SERVER_ADMIN_PASSWORD=${EXPOSE_SERVER_ADMIN_PASSWORD:-expose}
+# usage: file_env VAR [DEFAULT]
+#    ie: file_env 'XYZ_DB_PASSWORD' 'example'
+# (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
+#  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
+file_env() {
+	local var="$1"
+	local fileVar="${var}_FILE"
+	local def="${2:-}"
+	if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
+		echo "Both $var and $fileVar are set (but are exclusive)"
+		exit 1
+	fi
+	local val="$def"
+	if [ "${!var:-}" ]; then
+		val="${!var}"
+	elif [ "${!fileVar:-}" ]; then
+		val="$(< "${!fileVar}")"
+	fi
+	export "$var"="$val"
+	unset "$fileVar"
+}
+
+# Global environment variables
+EXPOSE_DEFAULT_SERVER=${EXPOSE_DEFAULT_SERVER:-"self-hosted"}
+EXPOSE_SERVER_ENDPOINT_URL=${EXPOSE_SERVER_ENDPOINT_URL:-"https://expose.dev/api/servers"}
+
+# Server environment variables
+EXPOSE_SERVER_DOMAIN=${EXPOSE_SERVER_DOMAIN:-"localhost"}
+EXPOSE_SERVER_PORT=${EXPOSE_SERVER_PORT:-"443"}
+file_env EXPOSE_SERVER_ADMIN_USERNAME "admin"
+file_env EXPOSE_SERVER_ADMIN_PASSWORD "expose"
 
 CONFIG_FILE=/src/config/expose.php
 echo "Generating Expose configuration file at ${CONFIG_FILE}"
@@ -27,6 +53,10 @@ return [
         'main' => [
             'host' => 'sharedwithexpose.com',
             'port' => 443,
+        ],
+        'self-hosted' => [
+            'host' => '${EXPOSE_SERVER_DOMAIN}',
+            'port' => ${EXPOSE_SERVER_PORT},
         ],
     ],
 
@@ -54,7 +84,7 @@ return [
     | or the servers endpoint above.
     |
     */
-    'default_server' => 'main',
+    'default_server' => '${EXPOSE_DEFAULT_SERVER}',
 
     /*
     |--------------------------------------------------------------------------
@@ -404,8 +434,24 @@ return [
 ];
 EOF
 
-if [[ $# -eq 0 ]]; then
-    exec /src/expose serve ${EXPOSE_DOMAIN} --port ${EXPOSE_SERVER_PORT} --validateAuthTokens
-else
-    exec /src/expose "$@"
+# If the user is trying to run Expose directly with some arguments, then
+# pass them to Expose server.
+if [ "${1:0:1}" = '-' ]; then
+    set -- /src/expose "$@"
 fi
+
+# Look for Expose subcommands.
+if [ "$1" = 'serve' ]; then
+    shift
+    set -- /src/expose serve -vv --ansi ${EXPOSE_SERVER_DOMAIN} --port ${EXPOSE_SERVER_PORT} --validateAuthTokens "$@"
+elif [ "$1" = 'share' ]; then
+    file_env EXPOSE_AUTH_TOKEN
+    file_env EXPOSE_AUTH_BASIC
+    shift
+    set -- /src/expose share -vv --ansi --no-interaction "$@"
+elif [ "$1" = 'expose' ]; then
+    shift
+    set -- /src/expose "$@"
+fi
+
+exec "$@"
