@@ -33,7 +33,6 @@ file_env EXPOSE_SERVER_ADMIN_USERNAME "admin"
 file_env EXPOSE_SERVER_ADMIN_PASSWORD "expose"
 
 CONFIG_FILE=/src/config/expose.php
-echo "Generating Expose configuration file at ${CONFIG_FILE}"
 cat <<EOF >${CONFIG_FILE}
 <?php
 
@@ -443,18 +442,18 @@ fi
 # Look for Expose subcommands.
 if [ "$1" = 'serve' ]; then
     shift
-    set -- /src/expose serve -vv --ansi ${EXPOSE_SERVER_DOMAIN} --port ${EXPOSE_SERVER_PORT} --validateAuthTokens "$@"
+    set -- /src/expose serve ${EXPOSE_SERVER_DOMAIN} --port ${EXPOSE_SERVER_PORT} --validateAuthTokens "$@"
 elif [ "$1" = 'share' ]; then
     file_env EXPOSE_AUTH_TOKEN
     file_env EXPOSE_AUTH_BASIC
     shift
     if [[ -n "${EXPOSE_AUTH_TOKEN}" ]]; then
-        set -- -auth="${EXPOSE_AUTH_TOKEN}" "$@"
+        set -- --auth="${EXPOSE_AUTH_TOKEN}" "$@"
     fi
     if [[ -n "${EXPOSE_AUTH_BASIC}" ]]; then
         set -- --basicAuth="${EXPOSE_AUTH_BASIC}" "$@"
     fi
-    set -- /src/expose share -vv --ansi --no-interaction "$@"
+    set -- /src/expose share "$@"
 elif [ "$1" = 'expose' ]; then
     shift
     set -- /src/expose "$@"
