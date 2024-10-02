@@ -5,7 +5,7 @@ RUN apt-get update \
 RUN docker-php-ext-install zip
 
 # Compile the source code
-FROM --platform=${BUILDPLATFORM} base AS build
+FROM base AS build
 RUN apt-get update \
     && apt-get install -y git \
     && rm -rf /var/lib/apt/lists/*
