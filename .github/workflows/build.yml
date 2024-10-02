@@ -5,11 +5,28 @@ on:
   pull_request:
 
 jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: releases
+        uses: actions-matrix/github-release-matrix-action@main
+        with:
+          repository: "beyondcode/expose"
+        env:
+          GH_TOKEN: ${{ github.token }}
+    outputs:
+      matrix: ${{ steps.releases.outputs.matrix }}
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+    needs: generate
+    strategy:
+      matrix: ${{ fromJson(needs.generate.outputs.matrix) }}
+    env:
+      EXPOSE_VERSION: ${{ matrix.releases.tag_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

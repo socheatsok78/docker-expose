@@ -1,5 +1,5 @@
-variable "EXPOSE_IMAGE" {
-    default = "beyondcodegmbh/expose-server:latest"
+variable "EXPOSE_VERSION" {
+    default = "master"
 }
 target "docker-metadata-action" {}
 target "default" {
@@ -8,7 +8,7 @@ target "default" {
     ]
     dockerfile = "Dockerfile"
     args = {
-        EXPOSE_IMAGE = "${EXPOSE_IMAGE}"
+        EXPOSE_VERSION = "${EXPOSE_VERSION}"
     }
     platforms = [
         "linux/amd64",
@@ -21,7 +21,7 @@ target "dev" {
     ]
     dockerfile = "Dockerfile"
     args = {
-        EXPOSE_IMAGE = "${EXPOSE_IMAGE}"
+        EXPOSE_VERSION = "${EXPOSE_VERSION}"
     }
     tags = [
         "socheatsok78/expose:dev"
