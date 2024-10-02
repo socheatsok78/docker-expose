@@ -54,7 +54,7 @@ These are global environment variables that can be used to configure both the Ex
 As an alternative to passing sensitive information via environment variables, `_FILE` may be appended to the previously listed environment variables, causing the initialization script to load the values for those variables from files present in the container. In particular, this can be used to load passwords from Docker secrets stored in `/run/secrets/<secret_name>` files. For example:
 
 ```bash
-docker run -d --name expose-server -p 80:80 \
+docker run -d --name expose-server \
     -e EXPOSE_SERVER_DOMAIN=sharedwithexpose.localhost \
     -e EXPOSE_SERVER_PORT=80 \
     -e EXPOSE_SERVER_ADMIN_USERNAME_FILE=/run/secrets/username \
