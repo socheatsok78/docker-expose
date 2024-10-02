@@ -14,6 +14,9 @@ A beautiful, fully open-source, tunneling service - written in pure PHP
 
 ```bash
 # Start a self-hosted server on port "80" with the domain "sharedwithexpose.localhost"
+# Environment variables specific to the server:
+# - `EXPOSE_SERVER_ADMIN_USERNAME` - The username for the admin panel, defaults to `admin`
+# - `EXPOSE_SERVER_ADMIN_PASSWORD` - The password for the admin panel, defaults to `expose`
 docker run -d --name expose-server -p 80:80 \
     -e EXPOSE_SERVER_DOMAIN=sharedwithexpose.localhost \
     -e EXPOSE_SERVER_PORT=80 \
@@ -22,25 +25,22 @@ docker run -d --name expose-server -p 80:80 \
     socheatsok78/expose:main serve
 ```
 
-**Environment variables**:
-- `EXPOSE_SERVER_ADMIN_USERNAME` - The username for the admin panel, defaults to `admin`
-- `EXPOSE_SERVER_ADMIN_PASSWORD` - The password for the admin panel, defaults to `expose`
-
 ### Running as a client
 
 ```bash
 # Connect to a self-hosted server running on "sharedwithexpose.localhost:80" and expose "http://your-local-service:80"
+# Environment variables specific to the client:
+# - `EXPOSE_AUTH_TOKEN` - The authentication token for the server, defaults to `""`
+# - `EXPOSE_AUTH_BASIC` - The basic authentication for the server, defaults to `""`
 docker run -d --name expose-server -p 80:80 \
     -e EXPOSE_SERVER_DOMAIN=sharedwithexpose.localhost \
     -e EXPOSE_SERVER_PORT=80 \
     socheatsok78/expose:main share http://your-local-service:80
 ```
 
-**Environment variables**:
-- `EXPOSE_AUTH_TOKEN` - The authentication token for the server, defaults to `""`
-- `EXPOSE_AUTH_BASIC` - The basic authentication for the server, defaults to `""`
+## Environment variables
 
-### Environment variables
+These are global environment variables that can be used to configure both the Expose server and client.
 
 - `EXPOSE_SERVER_DOMAIN` - The domain of the server, defaults to `localhost`
 - `EXPOSE_SERVER_PORT` - The port of the server, defaults to `443`
