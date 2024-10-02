@@ -1,6 +1,6 @@
 # About
 
-This is a custom Docker image for the [Expose](https://expose.dev/) tunneling service. Customized for my personal use. It configured to support both self-hosted and public servers. And can be use as a standalone server or as a client to connect to the servers.
+This is a custom Docker image for the [Expose](https://expose.dev) tunneling service. It configured to support both self-hosted and public servers and can be use as a standalone server or as a client to connect to the servers.
 
 ## What is Expose?
 
