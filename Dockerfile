@@ -10,8 +10,6 @@ RUN apt-get update \
     && apt-get install -y git \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Add the source code
 ADD https://github.com/beyondcode/expose.git#master /src
 WORKDIR /src
 RUN composer install -o --prefer-dist && chmod a+x expose
