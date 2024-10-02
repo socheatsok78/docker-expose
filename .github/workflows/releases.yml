@@ -1,17 +1,32 @@
-name: "Build"
+name: "Release"
 
 on:
   push:
-  pull_request:
+    branches: [main]
 
 jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: releases
+        uses: actions-matrix/github-release-matrix-action@main
+        with:
+          repository: "beyondcode/expose"
+        env:
+          GH_TOKEN: ${{ github.token }}
+    outputs:
+      matrix: ${{ steps.releases.outputs.matrix }}
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+    needs: generate
+    strategy:
+      matrix: ${{ fromJson(needs.generate.outputs.matrix) }}
     env:
-      EXPOSE_VERSION: master
+      EXPOSE_VERSION: ${{ matrix.releases.tag_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,7 +58,7 @@ jobs:
             docker.io/${{ github.actor }}/expose
             ghcr.io/${{ github.actor }}/expose
           flavor: latest=false
-          tags: type=ref,event=branch
+          tags: type=raw,value=${{ env.EXPOSE_VERSION }}
 
       - name: Generate GitHub metadata
         id: github-meta
