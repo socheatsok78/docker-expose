@@ -6,7 +6,7 @@ A custom Expose server for my personal use.
 
 A beautiful, fully open-source, tunneling service - written in pure PHP
 
-https://expose.dev/
+[Website](https://expose.dev/) | [Source code](https://github.com/beyondcode/expose)
 
 ## Usage
 
