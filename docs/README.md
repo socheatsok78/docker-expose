@@ -8,7 +8,7 @@ This directory contains deployment guides for running Expose server with fully v
 - Add Proxied DNS Record of your `expose` subdomain, e.g.: `expose.sharedwithexpose.localhost`
 - Add Proxied wildcard DNS Record of your domain, e.g.: `*.sharedwithexpose.localhost`
 - Create a Cloudflare Origin Certificate and download it
-- Deploy Expose server with all your necessary configuratio
+- Deploy Expose server with all your necessary configurations
 
 ## Overview
 
