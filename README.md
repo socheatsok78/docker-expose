@@ -27,6 +27,8 @@ docker run -d --name expose-server -p 80:80 \
     socheatsok78/expose:main serve
 ```
 
+Visit `http://expose.sharedwithexpose.localhost` to access the admin panel.
+
 ### Running as a client
 
 ```bash
@@ -34,7 +36,7 @@ docker run -d --name expose-server -p 80:80 \
 # Environment variables specific to the client:
 # - `EXPOSE_AUTH_TOKEN` - The authentication token for the server, defaults to `""`
 # - `EXPOSE_AUTH_BASIC` - The basic authentication for the server, defaults to `""`
-docker run -d --name expose-server -p 80:80 \
+docker run -d --name expose-server -p 4040:4040 \
     -e EXPOSE_SERVER_DOMAIN=sharedwithexpose.localhost \
     -e EXPOSE_SERVER_PORT=80 \
     socheatsok78/expose:main share http://your-local-service:80
