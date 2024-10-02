@@ -23,8 +23,8 @@ services:
   ingress:
     image: caddy:2.8-alpine
     environment:
-      EXPOSE_INGRESS_DOMAIN: $${EXPOSE_INGRESS_DOMAIN}
-      EXPOSE_INGRESS_TLS_PROVIDER: $${EXPOSE_INGRESS_TLS_PROVIDER}
+      EXPOSE_INGRESS_DOMAIN: ${EXPOSE_INGRESS_DOMAIN}
+      EXPOSE_INGRESS_TLS_PROVIDER: ${EXPOSE_INGRESS_TLS_PROVIDER}
     ports:
       - mode: host
         target: 80
@@ -45,9 +45,9 @@ services:
   expose:
     image: socheatsok78/expose:main
     environment:
-      EXPOSE_SERVER_DOMAIN: $${EXPOSE_SERVER_DOMAIN}
-      EXPOSE_SERVER_PORT: $${EXPOSE_SERVER_PORT}
-      EXPOSE_CONFIG_SERVER_ENDPOINT_URL: $${EXPOSE_CONFIG_SERVER_ENDPOINT_URL}
+      EXPOSE_SERVER_DOMAIN: ${EXPOSE_SERVER_DOMAIN}
+      EXPOSE_SERVER_PORT: ${EXPOSE_SERVER_PORT}
+      EXPOSE_CONFIG_SERVER_ENDPOINT_URL: ${EXPOSE_CONFIG_SERVER_ENDPOINT_URL}
       EXPOSE_SERVER_ADMIN_USERNAME_FILE: /run/secrets/expose_server_admin_username
       EXPOSE_SERVER_ADMIN_PASSWORD_FILE: /run/secrets/expose_server_admin_password
     networks:
