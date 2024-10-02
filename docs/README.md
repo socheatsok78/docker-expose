@@ -10,7 +10,8 @@ This directory contains deployment guides for running Expose server with fully v
 - Create a Cloudflare Origin Certificate and download it
 - Deploy Expose server with all your necessary configuratio
 
-**Overview:**
+## Overview
+
 ![alt text](image.png)
 
 ## Docker Stack
