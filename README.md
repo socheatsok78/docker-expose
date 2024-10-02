@@ -46,8 +46,8 @@ These are global environment variables that can be used to configure both the Ex
 
 - `EXPOSE_SERVER_DOMAIN` - The domain of the server, defaults to `localhost`
 - `EXPOSE_SERVER_PORT` - The port of the server, defaults to `443`
-- `EXPOSE_DEFAULT_SERVER` - The default server to use, defaults to `self-hosted`
-- `EXPOSE_SERVER_ENDPOINT_URL` - The endpoint URL of the Expose public servers, defaults to `https://expose.dev/api/servers`
+- `EXPOSE_CONFIG_DEFAULT_SERVER` - The default server to use, defaults to `self-hosted`
+- `EXPOSE_CONFIG_SERVER_ENDPOINT_URL` - The endpoint URL of the Expose public servers, defaults to `https://expose.dev/api/servers`
 
 ## Docker Secrets
 

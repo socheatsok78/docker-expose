@@ -31,8 +31,10 @@ file_env() {
 }
 
 # Global environment variables
-EXPOSE_DEFAULT_SERVER=${EXPOSE_DEFAULT_SERVER:-"self-hosted"}
-EXPOSE_SERVER_ENDPOINT_URL=${EXPOSE_SERVER_ENDPOINT_URL:-"https://expose.dev/api/servers"}
+EXPOSE_CONFIG_DEFAULT_SERVER=${EXPOSE_CONFIG_DEFAULT_SERVER:-"self-hosted"}
+EXPOSE_CONFIG_MEMORY_LIMIT=${EXPOSE_CONFIG_MEMORY_LIMIT:-"128M"}
+EXPOSE_CONFIG_MAX_LOGGED_REQUESTS=${EXPOSE_CONFIG_MAX_LOGGED_REQUESTS:-"25"}
+EXPOSE_CONFIG_SERVER_ENDPOINT_URL=${EXPOSE_CONFIG_SERVER_ENDPOINT_URL:-"https://expose.dev/api/servers"}
 
 # Server environment variables
 EXPOSE_SERVER_DOMAIN=${EXPOSE_SERVER_DOMAIN:-"localhost"}
@@ -80,7 +82,7 @@ return [
 	| if available.
 	|
 	*/
-	'server_endpoint' => '${EXPOSE_SERVER_ENDPOINT_URL}',
+	'server_endpoint' => '${EXPOSE_CONFIG_SERVER_ENDPOINT_URL}',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -91,7 +93,7 @@ return [
 	| or the servers endpoint above.
 	|
 	*/
-	'default_server' => '${EXPOSE_DEFAULT_SERVER}',
+	'default_server' => '${EXPOSE_CONFIG_DEFAULT_SERVER}',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -166,7 +168,7 @@ return [
 	| requests and responses in the local dashboard.
 	|
 	*/
-	'max_logged_requests' => 25,
+	'max_logged_requests' => ${EXPOSE_CONFIG_MAX_LOGGED_REQUESTS},
 
 	/*
 	|--------------------------------------------------------------------------
@@ -176,7 +178,7 @@ return [
 	| The maximum memory allocated to the expose process.
 	|
 	*/
-	'memory_limit' => '128M',
+	'memory_limit' => '${EXPOSE_CONFIG_MEMORY_LIMIT}',
 
 	/*
 	|--------------------------------------------------------------------------
