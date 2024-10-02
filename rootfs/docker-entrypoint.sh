@@ -456,10 +456,10 @@ elif [ "$1" = 'share' ]; then
     file_env EXPOSE_AUTH_BASIC
     shift
     if [[ -n "${EXPOSE_AUTH_TOKEN}" ]]; then
-        set -- --auth="${EXPOSE_AUTH_TOKEN}" "$@"
+        set -- --auth "${EXPOSE_AUTH_TOKEN}" "$@"
     fi
     if [[ -n "${EXPOSE_AUTH_BASIC}" ]]; then
-        set -- --basicAuth="${EXPOSE_AUTH_BASIC}" "$@"
+        set -- --basicAuth "${EXPOSE_AUTH_BASIC}" "$@"
     fi
     set -- /src/expose share "$@"
 elif [ "$1" = 'expose' ]; then
