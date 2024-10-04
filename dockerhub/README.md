@@ -69,4 +69,4 @@ docker run -d --name expose-server \
 Currently, this is only supported for `EXPOSE_SERVER_ADMIN_USERNAME`, `EXPOSE_SERVER_ADMIN_PASSWORD`, `EXPOSE_AUTH_TOKEN` and `EXPOSE_AUTH_BASIC`.
 
 ## License
-The MIT License (MIT). Please see [License File](./LICENSE) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/socheatsok78/docker-expose/raw/main/LICENSE) for more information.
