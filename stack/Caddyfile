@@ -1,0 +1,47 @@
+{
+	auto_https disable_redirects
+	servers :80 {
+		name http
+		metrics
+	}
+	servers :443 {
+		name https
+		metrics
+	}
+	log default {
+		output stdout
+		format json
+	}
+}
+(commons) {
+	header {
+		-Server
+	}
+	request_body {
+		max_size 16MB
+	}
+	@skip path_regexp \.(js|css|svg|png|jpe?g|gif|ico|woff|otf|ttf|eot|svg|txt?)$
+	log
+	log_skip @skip
+}
+(tls-internal) {
+	tls internal
+}
+(tls-cloudflare) {
+	tls {$CLOUDFLARE_ORIGIN_CERT_FILE:/run/secrets/cf_origin_server.crt} {$CLOUDFLARE_ORIGIN_KEY_FILE:/run/secrets/cf_origin_server.key}
+}
+http:// {
+	import commons
+	reverse_proxy expose.internal
+}
+https:// {
+	import commons
+	import tls-{$EXPOSE_INGRESS_TLS_PROVIDER:internal}
+	reverse_proxy expose.internal
+}
+{$EXPOSE_INGRESS_DOMAIN:sharedwithexpose.localhost}, *.{$EXPOSE_INGRESS_DOMAIN:sharedwithexpose.localhost} {
+	reverse_proxy expose.internal
+}
+:9191 {
+	metrics /metrics
+}
