@@ -1,6 +1,9 @@
-# Deployment guides
+# Setup and configure a server
 
-This directory contains deployment guides for running Expose server with fully valid SSL certificates using Cloudflare.
+![overview](image.png)
+
+> [!IMPORTANT]
+> This guide uses Cloudflare to issue SSL certificates for your domain for simplicity sake, since configure Caddy to generate wildcard certificates requires a bit more work. If you want to use Caddy to generate wildcard certificates, please refer to the official Caddy documentation.
 
 - Create a Cloudflare account
 - Add a domain to Cloudflare
@@ -9,7 +12,3 @@ This directory contains deployment guides for running Expose server with fully v
 - Add Proxied wildcard DNS Record of your domain, e.g.: `*.sharedwithexpose.localhost`
 - Create a Cloudflare Origin Certificate and download it
 - Deploy Expose server with all your necessary configurations
-
-## Overview
-
-![alt text](image.png)
